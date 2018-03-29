@@ -21,10 +21,9 @@ class Application(tk.Frame):
         # background.pack()
         background.grid()
         for i in range(GRID_LEN):
-            grid_row = []
             for j in range(GRID_LEN):
-                cell = tk.Frame(background, bg=BACKGROUND_COLOR_EMPTY, width=WINDOW_WIDTH/GRID_LEN, height=WINDOW_HEIGHT/GRID_LEN)
-                # cell.pack()
+                cell = tk.Frame(background, bg=BACKGROUND_COLOR_EMPTY,
+                                width=WINDOW_WIDTH/GRID_LEN, height=WINDOW_HEIGHT/GRID_LEN)
                 cell.grid(row=i, column=j, padx=1, pady=1)
                 t = tk.Label(master=cell, text="", bg=BACKGROUND_COLOR_EMPTY,
                              justify=tk.CENTER, font=FONT, width=4, height=2)
