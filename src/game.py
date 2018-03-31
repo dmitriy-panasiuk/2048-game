@@ -26,11 +26,12 @@ class Game:
         pass
 
     def _gen_tile(self):
-        n = random.randint(a=0, b=self._size**2-1)
-        x, y = self._n_to_pos(n)
-        if self.board[x][y] != 0:
-            pass
-        pass
+        while True:
+            n = random.randint(a=0, b=self._size**2-1)
+            x, y = self._n_to_pos(n)
+            if not self.board[x][y]:
+                self.board[x][y] = 2
+                return
 
     def _n_to_pos(self, n):
         return n // self._size, n % self._size

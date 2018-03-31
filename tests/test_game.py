@@ -61,3 +61,14 @@ def test_n_to_pos2(input, expected):
     game = Game()
 
     assert expected == game._pos_to_n(*input)
+
+
+def test_gen_tile():
+    game = Game()
+    game._gen_tile()
+
+    assert any(_flat_board(game.board))
+
+
+def _flat_board(board):
+    return [item for sublist in board for item in sublist]
