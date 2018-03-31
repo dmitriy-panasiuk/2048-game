@@ -17,7 +17,8 @@ class Application(tk.Frame):
         self.mainloop()
 
     def init(self):
-        background = tk.Frame(master=self, width=WINDOW_WIDTH, height=WINDOW_HEIGHT, bg=BACKGROUND_COLOR)
+        background = tk.Frame(master=self, width=WINDOW_WIDTH,
+                              height=WINDOW_HEIGHT, bg=BACKGROUND_COLOR)
         # background.pack()
         background.grid()
         for i in range(GRID_LEN):

@@ -26,8 +26,10 @@ class Game:
         pass
 
     def _gen_tile(self):
-        r = random.randint(a=0, b=self._size**2-1)
-        # if ()
+        n = random.randint(a=0, b=self._size**2-1)
+        x, y = self._n_to_pos(n)
+        if self.board[x][y] != 0:
+            pass
         pass
 
     def _n_to_pos(self, n):
@@ -35,7 +37,6 @@ class Game:
 
     def _pos_to_n(self, x, y):
         return x * self._size + y * self._size
-
 
     @property
     def score(self):

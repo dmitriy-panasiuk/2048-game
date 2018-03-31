@@ -29,8 +29,7 @@ def test_n_to_pos(input, expected):
     (19, (3, 4)),
     (24, (4, 4)),
 ])
-def test_n_to_pos(input, expected):
+def test_n_to_pos2(input, expected):
     game = Game(size=5)
 
     assert game._n_to_pos(n=input) == expected
-

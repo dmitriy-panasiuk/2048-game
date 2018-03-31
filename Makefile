@@ -1,5 +1,5 @@
 test:
-	printenv
+	tox -e unit
 
 run:
 	export PYTHONPATH=./src/
