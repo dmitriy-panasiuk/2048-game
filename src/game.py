@@ -8,6 +8,7 @@ class Game:
         self.board = [0] * size**2
         self._score = 0
         self._duration = 0
+        self._gen_tile()
 
     def left(self):
         pass
@@ -22,8 +23,8 @@ class Game:
         pass
 
     def _new_turn(self):
-        # Increase duration, generate new tile
-        pass
+        self._duration += 1
+        self._gen_tile()
 
     def _gen_tile(self):
         empty = [idx for idx, tile in enumerate(self.board) if not tile]
@@ -43,3 +44,6 @@ class Game:
     @property
     def duration(self):
         return self._duration
+
+    def tile(self, x, y):
+        return self.board[self._pos_to_n(x, y)]

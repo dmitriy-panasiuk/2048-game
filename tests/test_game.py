@@ -68,3 +68,14 @@ def test_gen_tile():
     game._gen_tile()
 
     assert any(game.board)
+
+
+def test_get_tile_multiple():
+    game = Game()
+    game._gen_tile()
+    game._gen_tile()
+    game._gen_tile()
+    game._gen_tile()
+    game._gen_tile()
+
+    assert len(list(filter(lambda x: x, game.board))) == 5
