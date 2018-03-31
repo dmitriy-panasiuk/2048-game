@@ -36,7 +36,7 @@ class Game:
         return n // self._size, n % self._size
 
     def _pos_to_n(self, x, y):
-        return x * self._size + y * self._size
+        return x * self._size + y
 
     @property
     def score(self):

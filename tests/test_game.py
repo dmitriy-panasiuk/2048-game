@@ -6,7 +6,7 @@ from game import Game
 def test_init():
     game = Game()
 
-    assert game.board == [[0] * 4 for _ in range(4)]
+    assert [[0] * 4 for _ in range(4)] == game.board
 
 
 @pytest.mark.parametrize("input, expected", [
@@ -18,7 +18,7 @@ def test_init():
 def test_n_to_pos(input, expected):
     game = Game()
 
-    assert game._n_to_pos(n=input) == expected
+    assert expected == game._n_to_pos(n=input)
 
 
 @pytest.mark.parametrize("input, expected", [
@@ -32,4 +32,32 @@ def test_n_to_pos(input, expected):
 def test_n_to_pos2(input, expected):
     game = Game(size=5)
 
-    assert game._n_to_pos(n=input) == expected
+    assert expected == game._n_to_pos(n=input)
+
+
+@pytest.mark.parametrize("input, expected", [
+    ((0, 0), 0),
+    ((0, 1), 1),
+    ((1, 0), 5),
+    ((1, 3), 8),
+    ((3, 4), 19),
+    ((4, 4), 24),
+])
+def test_n_to_pos2(input, expected):
+    game = Game(size=5)
+
+    assert expected == game._pos_to_n(*input)
+
+
+@pytest.mark.parametrize("input, expected", [
+    ((0, 0), 0),
+    ((0, 1), 1),
+    ((1, 0), 4),
+    ((1, 3), 7),
+    ((1, 1), 5),
+    ((3, 3), 15),
+])
+def test_n_to_pos2(input, expected):
+    game = Game()
+
+    assert expected == game._pos_to_n(*input)
