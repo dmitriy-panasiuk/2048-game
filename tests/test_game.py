@@ -6,7 +6,7 @@ from game import Game
 def test_init():
     game = Game()
 
-    assert [0] * 4**2 == game.board
+    assert len(list(filter(lambda x: x, game.board))) == 1
 
 
 @pytest.mark.parametrize("input, expected", [
@@ -78,4 +78,19 @@ def test_get_tile_multiple():
     game._gen_tile()
     game._gen_tile()
 
-    assert len(list(filter(lambda x: x, game.board))) == 5
+    assert len(list(filter(lambda x: x, game.board))) == 6
+
+
+@pytest.mark.parametrize("row, expected", [
+    ([0, 0, 0, 2], [2, 0, 0, 0]),
+    ([4, 0, 0, 2], [4, 2, 0, 0]),
+    ([2, 4, 8, 16], [2, 4, 8, 16]),
+    ([0, 2, 0, 0], [2, 0, 0, 0]),
+    ([0, 2, 2, 0], [2, 2, 0, 0]),
+    ([2, 0, 2, 2], [2, 2, 2, 0]),
+])
+def test_row_update(row, expected):
+    game = Game()
+    updated_row = game._update(row)
+
+    assert expected == updated_row

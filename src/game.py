@@ -11,16 +11,19 @@ class Game:
         self._gen_tile()
 
     def left(self):
-        pass
+        for i in range(self._size):
+            row = self.board[i*self._size:(i+1)*self._size]
+            row = self._update(row)
+        self._gen_tile()
 
     def right(self):
-        pass
+        self._gen_tile()
 
     def up(self):
-        pass
+        self._gen_tile()
 
     def down(self):
-        pass
+        self._gen_tile()
 
     def _new_turn(self):
         self._duration += 1
@@ -36,6 +39,20 @@ class Game:
 
     def _pos_to_n(self, x, y):
         return x * self._size + y
+
+    def _update(self, row):
+        updated_row = sorted(row, key=lambda x: int(x > 0), reverse=True)
+
+        prev, prev_i = 0, 0
+        for i, n in enumerate(updated_row[:]):
+            if n != prev:
+                updated_row[prev_i] = n
+                prev = n
+            else:
+                updated_row[prev_i] += n
+                prev = 0
+                prev_i += 1
+        return updated_row
 
     @property
     def score(self):
