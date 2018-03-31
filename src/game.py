@@ -5,7 +5,7 @@ class Game:
 
     def __init__(self, size=4):
         self._size = size
-        self.board = [[0] * size for _ in range(size)]
+        self.board = [0] * size**2
         self._score = 0
         self._duration = 0
 
@@ -26,12 +26,9 @@ class Game:
         pass
 
     def _gen_tile(self):
-        while True:
-            n = random.randint(a=0, b=self._size**2-1)
-            x, y = self._n_to_pos(n)
-            if not self.board[x][y]:
-                self.board[x][y] = 2
-                return
+        empty = [idx for idx, tile in enumerate(self.board) if not tile]
+        r = random.choice(empty)
+        self.board[r] = 2
 
     def _n_to_pos(self, n):
         return n // self._size, n % self._size
