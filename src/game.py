@@ -11,36 +11,44 @@ class Game:
         self._gen_tile()
 
     def left(self):
+        cp_board = self.board[:]
         for i in range(self._size):
             row = self.board[i*self._size:(i+1)*self._size]
             row, score = self._update(row)
             self._score += score
             self.board[i * self._size:(i + 1) * self._size] = row
-        self._new_turn()
+        if cp_board != self.board:
+            self._new_turn()
 
     def right(self):
+        cp_board = self.board[:]
         for i in range(self._size):
             row = self.board[i*self._size:(i+1)*self._size]
             row, score = self._update(reversed(row))
             self._score += score
             self.board[i * self._size:(i + 1) * self._size] = reversed(row)
-        self._new_turn()
+        if cp_board != self.board:
+            self._new_turn()
 
     def up(self):
+        cp_board = self.board[:]
         for i in range(self._size):
             row = self.board[i::self._size]
             row, score = self._update(row)
             self._score += score
             self.board[i::self._size] = row
-        self._new_turn()
+        if cp_board != self.board:
+            self._new_turn()
 
     def down(self):
+        cp_board = self.board[:]
         for i in range(self._size):
             row = self.board[i::self._size]
             row, score = self._update(reversed(row))
             self._score += score
             self.board[i::self._size] = reversed(row)
-        self._new_turn()
+        if cp_board != self.board:
+            self._new_turn()
 
     def _new_turn(self):
         self._duration += 1
