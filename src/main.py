@@ -5,6 +5,8 @@ from game import Game
 WINDOW_HEIGHT = 500
 WINDOW_WIDTH = 500
 GRID_LEN = 4
+CELL_HEIGHT = WINDOW_HEIGHT/(GRID_LEN+1)
+CELL_WIDTH = WINDOW_WIDTH/(GRID_LEN+1)
 BACKGROUND_COLOR = '#92877d'
 BACKGROUND_COLOR_EMPTY = "#9e948a"
 FONT = ("Verdana", 40, "bold")
@@ -52,11 +54,18 @@ class Application(tk.Frame):
                               height=WINDOW_HEIGHT, bg=BACKGROUND_COLOR)
         # background.pack()
         background.grid()
-        for i in range(GRID_LEN):
+        score_cell = tk.Frame(background, bg=BACKGROUND_COLOR_EMPTY,
+                              width=CELL_WIDTH, height=CELL_HEIGHT)
+        score_cell.grid(row=0, column=4, padx=1, pady=1)
+        score = tk.Label(master=score_cell, text="0", bg=BACKGROUND_COLOR_EMPTY,
+                         justify=tk.CENTER, font=FONT, width=4, height=2)
+        score.grid()
+        self.rows.append([None, None, None, score])
+        for i in range(1, GRID_LEN+1):
             row = []
             for j in range(GRID_LEN):
                 cell = tk.Frame(background, bg=BACKGROUND_COLOR_EMPTY,
-                                width=WINDOW_WIDTH / GRID_LEN, height=WINDOW_HEIGHT / GRID_LEN)
+                                width=CELL_WIDTH, height=CELL_HEIGHT)
                 cell.grid(row=i, column=j, padx=1, pady=1)
                 t = tk.Label(master=cell, text="", bg=BACKGROUND_COLOR_EMPTY,
                              justify=tk.CENTER, font=FONT, width=4, height=2)
@@ -65,9 +74,9 @@ class Application(tk.Frame):
             self.rows.append(row)
 
     def update_grid(self):
-        for i in range(GRID_LEN):
+        for i in range(1, GRID_LEN+1):
             for j in range(GRID_LEN):
-                v = self.game.tile(i, j)
+                v = self.game.tile(i-1, j)
                 if not v:
                     self.rows[i][j].configure(text="", bg=BACKGROUND_COLOR_EMPTY)
                 else:
