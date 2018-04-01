@@ -14,16 +14,29 @@ class Game:
         for i in range(self._size):
             row = self.board[i*self._size:(i+1)*self._size]
             row = self._update(row)
-        self._gen_tile()
+            self.board[i * self._size:(i + 1) * self._size] = row
+        self._new_turn()
 
     def right(self):
-        self._gen_tile()
+        for i in range(self._size):
+            row = self.board[i*self._size:(i+1)*self._size]
+            row = self._update(reversed(row))
+            self.board[i * self._size:(i + 1) * self._size] = reversed(row)
+        self._new_turn()
 
     def up(self):
-        self._gen_tile()
+        for i in range(self._size):
+            row = self.board[i::self._size]
+            row = self._update(row)
+            self.board[i::self._size] = row
+        self._new_turn()
 
     def down(self):
-        self._gen_tile()
+        for i in range(self._size):
+            row = self.board[i::self._size]
+            row = self._update(reversed(row))
+            self.board[i::self._size] = reversed(row)
+        self._new_turn()
 
     def _new_turn(self):
         self._duration += 1
@@ -42,16 +55,14 @@ class Game:
 
     def _update(self, row):
         updated_row = sorted(row, key=lambda x: int(x > 0), reverse=True)
+        idx = 0
+        while idx < len(updated_row)-1:
+            if updated_row[idx] == updated_row[idx+1]:
+                updated_row[idx] *= 2
+                updated_row[idx+1] = 0
+            idx += 1
+        updated_row = sorted(updated_row, key=lambda x: int(x > 0), reverse=True)
 
-        prev, prev_i = 0, 0
-        for i, n in enumerate(updated_row[:]):
-            if n != prev:
-                updated_row[prev_i] = n
-                prev = n
-            else:
-                updated_row[prev_i] += n
-                prev = 0
-                prev_i += 1
         return updated_row
 
     @property
