@@ -54,7 +54,6 @@ class Application(tk.Frame):
     def init(self):
         background = tk.Frame(master=self, width=WINDOW_WIDTH,
                               height=WINDOW_HEIGHT, bg=BACKGROUND_COLOR)
-        # background.pack()
         background.grid()
         score_cell = tk.Frame(background, bg=BACKGROUND_COLOR_EMPTY,
                               width=CELL_WIDTH, height=CELL_HEIGHT)
@@ -91,6 +90,8 @@ class Application(tk.Frame):
         if key_pressed in self.events:
             self.events[key_pressed]()
             self.update_grid()
+        if self.game.finished():
+            self.init()
 
 
 if __name__ == '__main__':

@@ -2,6 +2,7 @@ import random
 
 
 class Game:
+    ENDGAME_TILE = 2048
 
     def __init__(self, size=4):
         self._size = size
@@ -19,6 +20,8 @@ class Game:
             self.board[i * self._size:(i + 1) * self._size] = row
         if cp_board != self.board:
             self._new_turn()
+            return True
+        return False
 
     def right(self):
         cp_board = self.board[:]
@@ -29,6 +32,8 @@ class Game:
             self.board[i * self._size:(i + 1) * self._size] = reversed(row)
         if cp_board != self.board:
             self._new_turn()
+            return True
+        return False
 
     def up(self):
         cp_board = self.board[:]
@@ -39,6 +44,8 @@ class Game:
             self.board[i::self._size] = row
         if cp_board != self.board:
             self._new_turn()
+            return True
+        return False
 
     def down(self):
         cp_board = self.board[:]
@@ -49,6 +56,8 @@ class Game:
             self.board[i::self._size] = reversed(row)
         if cp_board != self.board:
             self._new_turn()
+            return True
+        return False
 
     def _new_turn(self):
         self._duration += 1
@@ -89,3 +98,12 @@ class Game:
 
     def tile(self, x, y):
         return self.board[self._pos_to_n(x, y)]
+
+    def finished(self):
+        if self.ENDGAME_TILE in self.board:
+            return True
+        board_orig = self.board[:]
+        moves = [self.up(), self.down(), self.left(), self.right()]
+        board_changed = any(moves)
+        self.board = board_orig
+        return not board_changed
