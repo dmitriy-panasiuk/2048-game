@@ -9,6 +9,8 @@ CELL_HEIGHT = WINDOW_HEIGHT/(GRID_LEN+1)
 CELL_WIDTH = WINDOW_WIDTH/(GRID_LEN+1)
 BACKGROUND_COLOR = '#92877d'
 BACKGROUND_COLOR_EMPTY = "#9e948a"
+SCORE_BACKGROUND_COLOR = 'sienna1'
+SCORE_COLOR = 'snow'
 FONT = ("Verdana", 40, "bold")
 
 # Keys
@@ -56,8 +58,8 @@ class Application(tk.Frame):
         background.grid()
         score_cell = tk.Frame(background, bg=BACKGROUND_COLOR_EMPTY,
                               width=CELL_WIDTH, height=CELL_HEIGHT)
-        score_cell.grid(row=0, column=4, padx=1, pady=1)
-        score = tk.Label(master=score_cell, text="0", bg=BACKGROUND_COLOR_EMPTY,
+        score_cell.grid(row=0, column=GRID_LEN-1, padx=1, pady=1)
+        score = tk.Label(master=score_cell, text="0", bg=SCORE_BACKGROUND_COLOR, fg=SCORE_COLOR,
                          justify=tk.CENTER, font=FONT, width=4, height=2)
         score.grid()
         self.rows.append([None, None, None, score])
@@ -74,6 +76,7 @@ class Application(tk.Frame):
             self.rows.append(row)
 
     def update_grid(self):
+        self.rows[0][3].configure(text=self.game.score)
         for i in range(1, GRID_LEN+1):
             for j in range(GRID_LEN):
                 v = self.game.tile(i-1, j)

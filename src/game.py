@@ -13,28 +13,32 @@ class Game:
     def left(self):
         for i in range(self._size):
             row = self.board[i*self._size:(i+1)*self._size]
-            row = self._update(row)
+            row, score = self._update(row)
+            self._score += score
             self.board[i * self._size:(i + 1) * self._size] = row
         self._new_turn()
 
     def right(self):
         for i in range(self._size):
             row = self.board[i*self._size:(i+1)*self._size]
-            row = self._update(reversed(row))
+            row, score = self._update(reversed(row))
+            self._score += score
             self.board[i * self._size:(i + 1) * self._size] = reversed(row)
         self._new_turn()
 
     def up(self):
         for i in range(self._size):
             row = self.board[i::self._size]
-            row = self._update(row)
+            row, score = self._update(row)
+            self._score += score
             self.board[i::self._size] = row
         self._new_turn()
 
     def down(self):
         for i in range(self._size):
             row = self.board[i::self._size]
-            row = self._update(reversed(row))
+            row, score = self._update(reversed(row))
+            self._score += score
             self.board[i::self._size] = reversed(row)
         self._new_turn()
 
@@ -55,15 +59,17 @@ class Game:
 
     def _update(self, row):
         updated_row = sorted(row, key=lambda x: int(x > 0), reverse=True)
+        score = 0
         idx = 0
         while idx < len(updated_row)-1:
             if updated_row[idx] == updated_row[idx+1]:
                 updated_row[idx] *= 2
+                score += updated_row[idx]
                 updated_row[idx+1] = 0
             idx += 1
         updated_row = sorted(updated_row, key=lambda x: int(x > 0), reverse=True)
 
-        return updated_row
+        return updated_row, score
 
     @property
     def score(self):
