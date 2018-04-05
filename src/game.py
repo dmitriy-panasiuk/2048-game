@@ -1,4 +1,5 @@
 import random
+from logger import logger
 
 
 class Game:
@@ -12,12 +13,14 @@ class Game:
         self._gen_tile()
 
     def left(self):
+        logger.debug(f'board before left is {self._board_repr()}')
         cp_board = self.board[:]
         for i in range(self._size):
             row = self.board[i*self._size:(i+1)*self._size]
             row, score = self._update(row)
             self._score += score
             self.board[i * self._size:(i + 1) * self._size] = row
+        logger.debug(f'board after left is {self._board_repr()}')
         if cp_board != self.board:
             self._new_turn()
             return True
@@ -88,6 +91,13 @@ class Game:
 
         return updated_row, score
 
+    def _board_repr(self):
+        res = '\n'
+        for row in range(self._size):
+            res += str(self.board[row*self._size:(row+1)*self._size])
+            res += '\n'
+        return res
+
     @property
     def score(self):
         return self._score
@@ -102,8 +112,9 @@ class Game:
     def finished(self):
         if self.ENDGAME_TILE in self.board:
             return True
-        board_orig = self.board[:]
-        moves = [self.up(), self.down(), self.left(), self.right()]
-        board_changed = any(moves)
-        self.board = board_orig
-        return not board_changed
+        return False
+        # board_orig = self.board[:]
+        # moves = [self.up(), self.down(), self.left(), self.right()]
+        # board_changed = any(moves)
+        # self.board = board_orig
+        # return not board_changed

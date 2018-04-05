@@ -1,4 +1,5 @@
 import tkinter as tk
+from logger import logger
 
 from game import Game
 
@@ -47,6 +48,7 @@ class Application(tk.Frame):
             KEY_LEFT: self.game.left, KEY_LEFT_ALT: self.game.left,
             KEY_RIGHT: self.game.right, KEY_RIGHT_ALT: self.game.right,
         }
+        self.score = None
         self.init()
         self.update_grid()
         self.mainloop()
@@ -61,7 +63,7 @@ class Application(tk.Frame):
         score = tk.Label(master=score_cell, text="0", bg=SCORE_BACKGROUND_COLOR, fg=SCORE_COLOR,
                          justify=tk.CENTER, font=FONT, width=4, height=2)
         score.grid()
-        self.rows.append([None, None, None, score])
+        self.score = score
         for i in range(1, GRID_LEN+1):
             row = []
             for j in range(GRID_LEN):
@@ -75,10 +77,10 @@ class Application(tk.Frame):
             self.rows.append(row)
 
     def update_grid(self):
-        self.rows[0][3].configure(text=self.game.score)
-        for i in range(1, GRID_LEN+1):
+        self.score.configure(text=self.game.score)
+        for i in range(GRID_LEN):
             for j in range(GRID_LEN):
-                v = self.game.tile(i-1, j)
+                v = self.game.tile(i, j)
                 if not v:
                     self.rows[i][j].configure(text="", bg=BACKGROUND_COLOR_EMPTY)
                 else:
@@ -87,6 +89,7 @@ class Application(tk.Frame):
 
     def key_press(self, event):
         key_pressed = event.keysym
+        logger.debug(f'Key pressed {key_pressed}')
         if key_pressed in self.events:
             self.events[key_pressed]()
             self.update_grid()
