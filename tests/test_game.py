@@ -1,6 +1,6 @@
 import pytest
 
-from game import Game
+from game import Game, Move
 
 
 def test_init():
@@ -98,3 +98,68 @@ def test_row_update(row, expected):
 
     assert expected == updated_row
 
+
+@pytest.fixture()
+def test_board():
+    return [
+        2, 0, 0, 2,
+        0, 4, 0, 2,
+        8, 0, 8, 2,
+        0, 4, 0, 2,
+    ]
+
+
+def test_up(test_board):
+    game = Game()
+    game.board = test_board[:]
+
+    game.up()
+
+    assert game.board == [
+        2, 8, 8, 4,
+        8, 0, 0, 4,
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+    ]
+
+
+def test_down(test_board):
+    game = Game()
+    game.board = test_board[:]
+
+    game.down()
+
+    assert game.board == [
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        2, 0, 0, 4,
+        8, 8, 8, 4,
+    ]
+
+
+def test_left(test_board):
+    game = Game()
+    game.board = test_board[:]
+
+    game.left()
+
+    assert game.board == [
+        4, 0, 0, 0,
+        4, 2, 0, 0,
+        16, 2, 0, 0,
+        4, 2, 0, 0,
+    ]
+
+
+def test_right(test_board):
+    game = Game()
+    game.board = test_board[:]
+
+    game.right()
+
+    assert game.board == [
+        0, 0, 0, 4,
+        0, 0, 4, 2,
+        0, 0, 16, 2,
+        0, 0, 4, 2,
+    ]

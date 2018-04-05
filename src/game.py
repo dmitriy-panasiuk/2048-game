@@ -1,5 +1,13 @@
 import random
 from logger import logger
+from enum import Enum
+
+
+class Move(Enum):
+    UP = 1
+    DOWN = 2
+    LEFT = 3
+    RIGHT = 4
 
 
 class Game:
@@ -7,60 +15,68 @@ class Game:
 
     def __init__(self, size=4):
         self._size = size
-        self.board = [0] * size**2
+        self.board = [0] * size ** 2
         self._score = 0
         self._duration = 0
         self._gen_tile()
+        self.moves = {
+            Move.UP: self.up,
+            Move.DOWN: self.down,
+            Move.LEFT: self.left,
+            Move.RIGHT: self.right,
+        }
+
+    def move(self, move):
+        board_changed, score = self.moves[move]()
+        if board_changed:
+            self._score += score
+            self._new_turn()
 
     def left(self):
         logger.debug(f'board before left is {self._board_repr()}')
         cp_board = self.board[:]
+        score = 0
         for i in range(self._size):
-            row = self.board[i*self._size:(i+1)*self._size]
-            row, score = self._update(row)
-            self._score += score
+            row = self.board[i * self._size:(i + 1) * self._size]
+            row, row_score = self._update(row)
+            score += row_score
             self.board[i * self._size:(i + 1) * self._size] = row
         logger.debug(f'board after left is {self._board_repr()}')
-        if cp_board != self.board:
-            self._new_turn()
-            return True
-        return False
+
+        return cp_board != self.board, score
 
     def right(self):
         cp_board = self.board[:]
+        score = 0
         for i in range(self._size):
-            row = self.board[i*self._size:(i+1)*self._size]
-            row, score = self._update(reversed(row))
-            self._score += score
+            row = self.board[i * self._size:(i + 1) * self._size]
+            row, row_score = self._update(reversed(row))
+            score += row_score
             self.board[i * self._size:(i + 1) * self._size] = reversed(row)
-        if cp_board != self.board:
-            self._new_turn()
-            return True
-        return False
+
+        return cp_board != self.board, score
 
     def up(self):
         cp_board = self.board[:]
+        score = 0
         for i in range(self._size):
             row = self.board[i::self._size]
-            row, score = self._update(row)
-            self._score += score
+            row, row_score = self._update(row)
+            score += row_score
             self.board[i::self._size] = row
-        if cp_board != self.board:
-            self._new_turn()
-            return True
-        return False
+
+        return cp_board != self.board, score
 
     def down(self):
         cp_board = self.board[:]
+        score = 0
         for i in range(self._size):
             row = self.board[i::self._size]
-            row, score = self._update(reversed(row))
-            self._score += score
+            row, row_score = self._update(reversed(row))
+            score += row_score
             self.board[i::self._size] = reversed(row)
-        if cp_board != self.board:
-            self._new_turn()
-            return True
-        return False
+
+        return cp_board != self.board, score
 
     def _new_turn(self):
         self._duration += 1
@@ -81,11 +97,11 @@ class Game:
         updated_row = sorted(row, key=lambda x: int(x > 0), reverse=True)
         score = 0
         idx = 0
-        while idx < len(updated_row)-1:
-            if updated_row[idx] == updated_row[idx+1]:
+        while idx < len(updated_row) - 1:
+            if updated_row[idx] == updated_row[idx + 1]:
                 updated_row[idx] *= 2
                 score += updated_row[idx]
-                updated_row[idx+1] = 0
+                updated_row[idx + 1] = 0
             idx += 1
         updated_row = sorted(updated_row, key=lambda x: int(x > 0), reverse=True)
 
@@ -94,7 +110,7 @@ class Game:
     def _board_repr(self):
         res = '\n'
         for row in range(self._size):
-            res += str(self.board[row*self._size:(row+1)*self._size])
+            res += str(self.board[row * self._size:(row + 1) * self._size])
             res += '\n'
         return res
 

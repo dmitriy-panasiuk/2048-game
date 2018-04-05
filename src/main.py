@@ -1,7 +1,7 @@
 import tkinter as tk
 from logger import logger
 
-from game import Game
+from game import Game, Move
 
 WINDOW_HEIGHT = 500
 WINDOW_WIDTH = 500
@@ -43,10 +43,10 @@ class Application(tk.Frame):
         self.rows = []
         self.game = Game()
         self.events = {
-            KEY_UP: self.game.up, KEY_UP_ALT: self.game.up,
-            KEY_DOWN: self.game.down, KEY_DOWN_ALT: self.game.down,
-            KEY_LEFT: self.game.left, KEY_LEFT_ALT: self.game.left,
-            KEY_RIGHT: self.game.right, KEY_RIGHT_ALT: self.game.right,
+            KEY_UP: Move.UP, KEY_UP_ALT: Move.UP,
+            KEY_DOWN: Move.DOWN, KEY_DOWN_ALT: Move.DOWN,
+            KEY_LEFT: Move.LEFT, KEY_LEFT_ALT: Move.LEFT,
+            KEY_RIGHT: Move.RIGHT, KEY_RIGHT_ALT: Move.RIGHT,
         }
         self.score = None
         self.init()
@@ -91,7 +91,7 @@ class Application(tk.Frame):
         key_pressed = event.keysym
         logger.debug(f'Key pressed {key_pressed}')
         if key_pressed in self.events:
-            self.events[key_pressed]()
+            self.game.move(self.events[key_pressed])
             self.update_grid()
         if self.game.finished():
             self.init()
