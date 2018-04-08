@@ -11,7 +11,7 @@ class Move(Enum):
 
 
 class Game:
-    ENDGAME_TILE = 2048
+    ENDGAME_TILE = 16
 
     def __init__(self, size=4):
         self._size = size
@@ -128,9 +128,8 @@ class Game:
     def finished(self):
         if self.ENDGAME_TILE in self.board:
             return True
-        return False
-        # board_orig = self.board[:]
-        # moves = [self.up(), self.down(), self.left(), self.right()]
-        # board_changed = any(moves)
-        # self.board = board_orig
-        # return not board_changed
+        board_orig = self.board[:]
+        moves = [self.up()[0], self.down()[0], self.left()[0], self.right()[0]]
+        board_changed = any(moves)
+        self.board = board_orig
+        return not board_changed

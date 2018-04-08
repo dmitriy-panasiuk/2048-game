@@ -40,20 +40,22 @@ class Application(tk.Frame):
         self.pack()
         self.master.title('2048')
         self.master.bind("<Key>", self.key_press)
-        self.rows = []
-        self.game = Game()
         self.events = {
             KEY_UP: Move.UP, KEY_UP_ALT: Move.UP,
             KEY_DOWN: Move.DOWN, KEY_DOWN_ALT: Move.DOWN,
             KEY_LEFT: Move.LEFT, KEY_LEFT_ALT: Move.LEFT,
             KEY_RIGHT: Move.RIGHT, KEY_RIGHT_ALT: Move.RIGHT,
         }
+        self.rows = []
+        self.game = Game()
         self.score = None
         self.init()
-        self.update_grid()
         self.mainloop()
 
     def init(self):
+        self.rows = []
+        self.game = Game()
+        self.score = None
         background = tk.Frame(master=self, width=WINDOW_WIDTH,
                               height=WINDOW_HEIGHT, bg=BACKGROUND_COLOR)
         background.grid()
@@ -75,6 +77,7 @@ class Application(tk.Frame):
                 t.grid()
                 row.append(t)
             self.rows.append(row)
+        self.update_grid()
 
     def update_grid(self):
         self.score.configure(text=self.game.score)
@@ -94,7 +97,14 @@ class Application(tk.Frame):
             self.game.move(self.events[key_pressed])
             self.update_grid()
         if self.game.finished():
-            self.init()
+            self.end_game()
+            self.game = Game()
+            self.update_grid()
+
+    def end_game(self):
+        toplevel = tk.Toplevel()
+        label1 = tk.Label(toplevel, text=f'Game finished, you score is {self.game.score}', height=10, width=25)
+        label1.pack()
 
 
 if __name__ == '__main__':
