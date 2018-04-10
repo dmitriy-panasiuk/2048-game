@@ -11,7 +11,7 @@ class Move(Enum):
 
 
 class Game:
-    ENDGAME_TILE = 16
+    ENDGAME_TILE = 2048
 
     def __init__(self, size=4):
         self._size = size
@@ -27,13 +27,14 @@ class Game:
         }
 
     def move(self, move):
+        logger.debug(f'board before {move} is {self._board_repr()}')
         board_changed, score = self.moves[move]()
         if board_changed:
             self._score += score
             self._new_turn()
+        logger.debug(f'board after {move} is {self._board_repr()}')
 
     def left(self):
-        logger.debug(f'board before left is {self._board_repr()}')
         cp_board = self.board[:]
         score = 0
         for i in range(self._size):
@@ -41,7 +42,6 @@ class Game:
             row, row_score = self._update(row)
             score += row_score
             self.board[i * self._size:(i + 1) * self._size] = row
-        logger.debug(f'board after left is {self._board_repr()}')
 
         return cp_board != self.board, score
 
